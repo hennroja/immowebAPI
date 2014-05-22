@@ -6,7 +6,9 @@ Java API for immoweb.be
 This Java API helps you to easily access estates on immoweb.be.
 At the moment it only supports searchquerys but not detailed view.::
 
-    Example:
+Example:
+
+    ImmowebApi api = new ImmowebApi();
     SearchQuery query = Query.searchQuery()
 		.type(Query.TYPE.RENT)
 		.iphone("")
@@ -17,4 +19,5 @@ At the moment it only supports searchquerys but not detailed view.::
 		.priceMin(400)
 		.priceMax(700)
 		.furnished(true);
+    QueryResponse answer = api.fire(query);
 
