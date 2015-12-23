@@ -4,14 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.DeserializationConfig.Feature;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * The Java API offers the ability to send search Query 
  * to immoweb.be.
@@ -25,6 +22,7 @@ public class ImmowebApi {
 
 	public QueryResponse search(SearchQuery config) throws IOException {
 
+		System.out.println(config.query);
 		//prepair http request
 		URL url = new URL(config.query);
 		HttpURLConnection connection;
@@ -59,27 +57,20 @@ public class ImmowebApi {
 
 		// JSON wrapping
 		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		System.out.println(stripContent);
 		QueryResponse response = null;
 		try {
 			response = objectMapper.readValue(stripContent,
 					QueryResponse.class);
 		} catch (JsonParseException e ) {
-			captureCode(stripContent);
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		}
-
 		return response;
 	}
 	
-	private void captureCode(String stripContent) {
-		
-		
-	}
-
 	private void print(SearchResult s) {
 		System.out.println("------ ID: " + s.id + " TYPE: " + s.type
 				+ " in " + s.postal + " ------");

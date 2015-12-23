@@ -1,19 +1,15 @@
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import javax.management.ImmutableDescriptor;
-
 import de.hennroja.immoweb.api.ImmowebApi;
 import de.hennroja.immoweb.api.Query;
 import de.hennroja.immoweb.api.QueryResponse;
 import de.hennroja.immoweb.api.SearchResult;
 
-public class Checker {
+public class DemoChecker {
 
 	public static void main(String[] args) {
 		ImmowebApi api = new ImmowebApi();
@@ -26,17 +22,17 @@ public class Checker {
 					.postalCode("1000").postalCode("1040").postalCode("1050")
 					.furnished(true));
 
-			List<String> lines = Files.readAllLines(
+			List<String> filterOutLines = Files.readAllLines(
 					Paths.get("properties.obj"), Charset.forName("UTF-8"));
 
-			//mads works
+			// GPS coordinates of work
 			float l1 = 50.8408597f;
 			float l2 = 4.3709325f;
 
 			for (SearchResult e : r.getEstates()) {
 				boolean existing = false;
-				for (String string : lines) {
-					if (e.id == Integer.parseInt(string)) {
+				for (String filterId : filterOutLines) {
+					if (e.id == Integer.parseInt(filterId)) {
 						existing = true;
 						break;
 					}
@@ -53,7 +49,6 @@ public class Checker {
 			System.out.println("done.");
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
