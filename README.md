@@ -1,4 +1,4 @@
-immowebAPI (Depricated)
+immowebAPI (Deprecated)
 ==========
 
 Java API for immoweb.be
